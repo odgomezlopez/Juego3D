@@ -91,26 +91,23 @@ public class PlayerController : MonoBehaviour, IGenericController
         if (!ready) return;
 
         Vector2 movementInput;
-        float speedModified;
         //Compruebo si puedo moverme y le doy la orden de mover al subocntorlador
         if (stateController.moveActionEnabled)
         {
             movementInput = context.ReadValue<Vector2>();
-            speedModified = 1f;
         }
         else
         {
             movementInput = Vector2.zero;
-            speedModified = 0f;
         }
-        movementController.Move(movementInput, stats.speedForce * speedModified);
+        movementController.Move(movementInput);
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         if (!ready) return;
         if (!stateController.lookActionEnabled) return;
-        movementController.Turn(context.ReadValue<Vector2>(),stats.turningSpeed);
+        movementController.Turn(context.ReadValue<Vector2>());
     }
 
     //Funciones de ataque base
@@ -130,7 +127,7 @@ public class PlayerController : MonoBehaviour, IGenericController
     {
         if (!ready) return;
         if (!stateController.jumpActionEnabled) return;
-        movementController.Jump(stats.jumpForce,stats.maxJump);
+        movementController.Jump();
     }
     //Funciones de acciones contextuales
     public void OnContextualAction(InputAction.CallbackContext context)

@@ -17,6 +17,8 @@ public class Stats : MonoBehaviour
     [Header("Movement")]
     public float speedForce;
     public float jumpForce;
+    public float airMomentum;
+
     public int maxJump;
 
     [Header("KnockBack")]

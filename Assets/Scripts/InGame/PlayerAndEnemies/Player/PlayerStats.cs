@@ -10,7 +10,12 @@ public class PlayerStats : Stats
     public int deathCount;
 
     [Header("Player Look")]
-    public float turningSpeed;
+    public float turnHorizontalSpeed;
+
+    public float turnVerticalSpeed;
+    public float minVerticalPos;
+    public float maxVerticalPos;
+
     //public Vector3 lookRange;
 
 
