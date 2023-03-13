@@ -46,7 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevelName: 
+  currentAvatar: {fileID: 60635193650406596, guid: a3b91f23cda4ed84192810ac0769b765, type: 3}
   lastPlayerPoint: 0
+  lastPlayerWin: 0
+  ranking: []
 --- !u!114 &1702597231464788157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,9 +68,10 @@ MonoBehaviour:
     initValue: 5
     autoUpdateRate: 0
     icon: {fileID: 0}
-  speed: {x: 30, y: 0, z: 15}
-  minSpeed: {x: -45, y: -1, z: -10}
-  maxSpeed: {x: 45, y: 1, z: 120}
+  speedForce: 20
+  jumpForce: 4
+  airMomentum: 0.8
+  maxJump: 2
   forceKnockBack: 30
   secondsKnockBack: 1
   attackDamage: 2
@@ -79,5 +83,7 @@ MonoBehaviour:
   attackSFX: {fileID: 8300000, guid: e42a23b6fd10ec94b9a1a8e589e5fa44, type: 3}
   damageSFX: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
   deathCount: 0
-  lookSpeed: 80
-  lookRange: {x: 40, y: 40, z: 0}
+  turnHorizontalSpeed: 60
+  turnVerticalSpeed: 0.1
+  minVerticalPos: 2.5
+  maxVerticalPos: 4
