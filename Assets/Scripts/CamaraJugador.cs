@@ -8,7 +8,7 @@ public class CamaraJugador : MonoBehaviour
     private Vector3 ultimaPosicion;
 
     public float velocidadX;
-    public float velocidadY;
+    public float velocidadZ;
 
     void Start()
     {
@@ -18,7 +18,9 @@ public class CamaraJugador : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 movimiento = jugadorTransform.position - ultimaPosicion;
-        transform.position = transform.position+new Vector3(movimiento.x*velocidadX, movimiento.y*velocidadY,0);
+
+        transform.position = transform.position + new Vector3(movimiento.x*velocidadX, 0, movimiento.z * velocidadZ);
+
         ultimaPosicion = jugadorTransform.position;
     }
 }

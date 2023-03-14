@@ -9,6 +9,7 @@ TagManager:
   - Control/HUD
   - Enemy
   - Floor
+  - Control/Loading
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Water
   - UI
   - Floor
-  - 
-  - 
+  - NotInMiniMap
+  - OnlyMiniMap
   - 
   - 
   - 

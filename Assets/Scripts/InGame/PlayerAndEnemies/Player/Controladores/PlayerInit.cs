@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInit : MonoBehaviour
+public class PlayerInit : MonoBehaviour, IReadied
 {
     Data data;
 
     private bool ready = false;
-    public bool isReady => ready;
-
     void Start()
     {
         ready = false;
@@ -36,9 +34,11 @@ public class PlayerInit : MonoBehaviour
         {
             Debug.Log("No creado un spawn point en el nivel actual");
         }
-
         ready = true;
     }
-
+    public bool IsReady()
+    {
+        return ready;
+    }
 }
 

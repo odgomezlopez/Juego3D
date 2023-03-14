@@ -21,7 +21,7 @@ public class PlayerAnimationController : MonoBehaviour
         ready = false;
 
         init = GetComponent<PlayerInit>();
-        yield return new WaitUntil(() => (init.isReady));
+        yield return new WaitUntil(() => (init.IsReady()));
 
         movementController = GetComponent<PlayerMovementController>();
 

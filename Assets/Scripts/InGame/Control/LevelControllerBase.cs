@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class LevelControllerBase : MonoBehaviour
+
+using System.Linq;
+
+public class LevelControllerBase : MonoBehaviour, IReadied
 {
     //Atributos
     protected Data data;
-    protected PlayerStats stats;
+    protected PlayerController playerController;
     protected ControlHUD controlHUD;
+    protected LoadingScreenController loadingScreenController;
 
     protected float levelInitTime;
-
 
     [SerializeField]
     protected string nextLevelWin;
@@ -22,21 +25,49 @@ public class LevelControllerBase : MonoBehaviour
     [SerializeField]
     protected bool goToFirstLevel;
 
+    private bool ready = false;
+
     //Metodos
-    protected virtual void Start()
+    protected virtual IEnumerator Start()
     {
+        ready = false;
+
+        //Referencias a elementos principales de la escena
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         data = GameObject.FindGameObjectWithTag("GameData").GetComponent<Data>();
+        controlHUD = GameObject.FindGameObjectWithTag("Control/HUD").GetComponent<ControlHUD>();
+        loadingScreenController = GameObject.FindGameObjectWithTag("Control/Loading").GetComponent<LoadingScreenController>();
 
-        stats = GameObject.FindGameObjectWithTag("GameData").GetComponent<PlayerStats>();
-        stats.RestartStats();
+        //Pongo la ventana de carga y bloqueo al jugador
+        loadingScreenController.ShowLoadingScreen();
 
-        controlHUD= GameObject.FindGameObjectWithTag("Control/HUD").GetComponent<ControlHUD>();
+        //Espermos a que todos los elementos de la escena esten listos
+        IReadied[] readieds = FindObjectsOfType<MonoBehaviour>().OfType<IReadied>().ToArray();
+        foreach (IReadied readied in readieds)
+        {
+            if (readied is LevelControllerBase) continue;
+            yield return new WaitUntil(() => (readied.IsReady()));
+        }
+
+        {
+        //Obtener referencias a componentes
         levelInitTime = Time.time;
 
-        controlHUD.SetHPUI(stats.HP.CurrentValue,stats.HP.maxValue);
+        playerController.GetStats().RestartStats();
+        controlHUD.SetHPUI(playerController.GetStats().HP.CurrentValue, playerController.GetStats().HP.maxValue);
 
         //Inicializacion cursor
         Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        //Desactivo la pantalla de carga
+        ready = true;
+        loadingScreenController.HideLoadingScreen();
+        yield return null;
+    }
+    public bool IsReady()
+    {
+        return ready;
     }
 
     protected virtual void Update() {
@@ -109,4 +140,6 @@ public class LevelControllerBase : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.0f);
         SceneManager.LoadScene(nextScene);
     }
+
+
 }

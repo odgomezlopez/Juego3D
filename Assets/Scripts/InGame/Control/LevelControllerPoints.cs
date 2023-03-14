@@ -4,17 +4,15 @@ using UnityEngine;
 public class LevelControllerPoints : LevelControllerBase
 {
     // Start is called before the first frame update
-    private GameObject player;
     public Indicator points;
     public Indicator timeSeconds;
     public float deacreaseTime = 1;
 
-    protected override void Start()
+    protected override IEnumerator Start()
     {
-        base.Start();
+        yield return base.Start();
         
-        player = GameObject.FindGameObjectWithTag("Player");
-        stats.invulnerable = false;
+        playerController.GetStats().invulnerable = false;
         points.RestartStats();
         timeSeconds.RestartStats();
 

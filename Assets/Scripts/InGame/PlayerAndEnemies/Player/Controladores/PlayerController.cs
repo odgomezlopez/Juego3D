@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 using static Utils.Utils;
 
-public class PlayerController : MonoBehaviour, IGenericController
+public class PlayerController : MonoBehaviour, IGenericController, IReadied
 {
     //Stats
     private PlayerStats stats;
@@ -33,9 +33,9 @@ public class PlayerController : MonoBehaviour, IGenericController
     {
         //TODO ESPERAR AL INIT
         ready = false;
-
+        
         init = GetComponent<PlayerInit>();
-        yield return new WaitUntil(() => (init.isReady));
+        yield return new WaitUntil(() => (init.IsReady()));
 
         //Controlador del nivel
         control = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelControllerBase>();
@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour, IGenericController
         //Subonctorladores
         stateController = GetComponent<PlayerStateController>();
         stateController.UpdateState(PlayerStates.MOVE);
+        //DisableGamePlay(); //Desactivamos el gameplay.Sera activado desde el controlador de nivel
+
 
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerFireAttackController>();
@@ -61,8 +63,13 @@ public class PlayerController : MonoBehaviour, IGenericController
         inGameUIController = GetComponent<PlayerInGameUIController>();
 
         stats.HP.OnIndicatorChange += OnHPUpdate;
-
+        //yield return new WaitForSecondsRealtime(1f);
         ready = true;
+    }
+
+    public bool IsReady()
+    {
+        return ready;
     }
 
     //Gestion de Stats
@@ -88,7 +95,7 @@ public class PlayerController : MonoBehaviour, IGenericController
     //Metodos para la comunicación desde el exterior con PlayerController
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (!ready) return;
+        if (!IsReady()) return;
 
         Vector2 movementInput;
         //Compruebo si puedo moverme y le doy la orden de mover al subocntorlador
@@ -105,7 +112,7 @@ public class PlayerController : MonoBehaviour, IGenericController
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        if (!ready) return;
+        if (!IsReady()) return;
         if (!stateController.lookActionEnabled) return;
         movementController.Turn(context.ReadValue<Vector2>());
     }
@@ -125,15 +132,14 @@ public class PlayerController : MonoBehaviour, IGenericController
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!ready) return;
+        if (!IsReady()) return;
         if (!stateController.jumpActionEnabled) return;
         movementController.Jump();
     }
     //Funciones de acciones contextuales
     public void OnContextualAction(InputAction.CallbackContext context)
     {
-        if (!ready) return;
-
+        if (!IsReady()) return;
         if (!stateController.contextualActionEnabled) return;
 
         if (context.performed && context.action.WasPerformedThisFrame() && context.action.IsPressed())
@@ -144,6 +150,7 @@ public class PlayerController : MonoBehaviour, IGenericController
             }
         }
     }
+
 
     //Gestion de daño
     public void OnHealing(float heal)

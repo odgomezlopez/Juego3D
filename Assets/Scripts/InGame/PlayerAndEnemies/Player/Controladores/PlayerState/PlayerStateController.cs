@@ -9,7 +9,6 @@ public class PlayerStateController : MonoBehaviour
     public PlayerStates previousState;
     public PlayerStates currentState;
 
-
     //Referencias a los subcontroladores necesarios
     private PlayerMovementController movementController;
 

@@ -26,7 +26,7 @@ public class PlayerMovementCharacterController : PlayerMovementController
 
     void ApplyGravity()
     {
-        inGround = IsGrounded(gameObject);
+        inGround = IsGrounded(gameObject,0.1f);
         if (inGround) numSaltos = 0;
 
         if (inGround && moveInput.y < 0)
